@@ -1,6 +1,8 @@
+import type { TErrorName, TStatusCode } from '../types';
+
 /**
- * Create an instance of `Error` with custom properties
- *
+ * @class
+ * @constructor  Create an instance of `Error` with custom properties
  * @param name Error name
  * @param message Error message
  * @param status HTTP status code
@@ -8,9 +10,9 @@
  */
 export class ErrorWithStatus extends Error {
 	constructor(
-		public name: string,
+		public name: TErrorName,
 		public message: string,
-		public status: number,
+		public status: TStatusCode,
 		public path: string = '',
 	) {
 		super(message);

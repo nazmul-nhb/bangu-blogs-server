@@ -2,17 +2,19 @@ import chalk from 'chalk';
 import processErrors from '../errors/processErrors';
 import { ErrorWithStatus } from '../classes/ErrorWithStatus';
 import type { ErrorRequestHandler, RequestHandler } from 'express';
+import { STATUS_CODES } from '../constants';
 
 /**
  * Middleware to Handle Route/Method Not Found Errors
  */
 export const handleNotFound: RequestHandler = (req, _res, next) => {
 	const error = new ErrorWithStatus(
-		'Not Found Error',
+		'NotFoundError',
 		`Requested End-Point “${req.method}: ${req.url}” Not Found!`,
-		404,
+		STATUS_CODES.NOT_FOUND,
 		req.url,
 	);
+
 	next(error);
 };
 
@@ -41,7 +43,8 @@ export const globalError: ErrorRequestHandler = (error, _req, res, next) => {
 	res.status(statusCode).json({
 		success: false,
 		message: name,
-		errorSources: errorSource,
+		statusCode,
+		errors: errorSource,
 		stack,
 	});
 };

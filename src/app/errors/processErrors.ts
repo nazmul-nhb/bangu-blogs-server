@@ -4,8 +4,8 @@ import { handleZodErrors } from './zodErrors';
 import { Error as MongoError } from 'mongoose';
 import { mongoErrors } from './mongoErrors';
 import { genericErrors } from './genericErrors';
-import { ErrorWithStatus } from '../classes/ErrorWithStatus';
 import type { IErrorResponse } from '../types/interfaces';
+import { ErrorWithStatus } from '../classes/ErrorWithStatus';
 
 /**
  * Processes an error of `unknown` type and returns a structured response.
