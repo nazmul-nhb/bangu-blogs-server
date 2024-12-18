@@ -1,11 +1,10 @@
 import type { RequestHandler, Request, Response, NextFunction } from 'express';
 
 /**
+ * @function
  * A higher-order function that wraps an asynchronous Express request handler
  * to catch any errors and pass them to the global error handler middleware.
- *
  * @param asyncFn - The asynchronous request handler function to be wrapped.
- *
  * @returns A new request handler function that catches errors from the original handler.
  *
  * @example

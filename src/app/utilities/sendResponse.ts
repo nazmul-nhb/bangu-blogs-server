@@ -2,8 +2,8 @@ import type { Response } from 'express';
 import type { TCollection, TOperation, TResponseDetails } from '../types';
 
 /**
+ * @function
  * Sends a formatted JSON response.
- *
  * @param res Response from Express.js from the specific controller.
  * @param collection The name of the collection (e.g., 'Student').
  * @param operation The operation type (e.g., 'create', 'get', 'update', 'delete').
@@ -26,8 +26,8 @@ const sendResponse = <T>(
 };
 
 /**
+ * @function
  * Generates message and status code based on the collection and operation type.
- *
  * @param collection The name of the collection (e.g., 'Student').
  * @param operation The operation type (e.g., 'create', 'get', 'update', 'delete').
  * @param data The data being operated upon.
@@ -40,16 +40,13 @@ const generateResponse = <T>(
 ): TResponseDetails => {
 	const isArray = Array.isArray(data);
 
-	const regMessage =
-		collection === 'Registration' ? 'Successfully Registered!' : '';
-
 	let message = 'Operation Successful!',
 		statusCode = 200;
 
 	switch (operation) {
 		case 'create':
 			statusCode = 201;
-			message = regMessage || `${collection} is created successfully!`;
+			message = `${collection} is created successfully!`;
 			break;
 		case 'get':
 			message = isArray
