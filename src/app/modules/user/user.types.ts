@@ -17,7 +17,8 @@ export interface ILoginCredentials {
 }
 
 export interface IToken {
-	token: string;
+	accessToken: string;
+	refreshToken: string;
 }
 
 export interface IUserDoc extends Document {}

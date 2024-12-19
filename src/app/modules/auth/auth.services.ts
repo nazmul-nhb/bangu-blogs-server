@@ -58,13 +58,13 @@ const loginUser = async (payload: ILoginCredentials): Promise<IToken> => {
 		configs.accessExpireTime,
 	);
 
-	// const refreshToken = generateToken(
-	// 	jwtPayload,
-	// 	configs.refreshSecret,
-	// 	configs.refreshExpireTime,
-	// );
+	const refreshToken = generateToken(
+		jwtPayload,
+		configs.refreshSecret,
+		configs.refreshExpireTime,
+	);
 
-	return { token: accessToken };
+	return { accessToken, refreshToken };
 };
 
 export const authServices = { registerUserInDB, loginUser };

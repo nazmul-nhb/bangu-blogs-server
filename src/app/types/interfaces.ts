@@ -1,4 +1,4 @@
-import type { TUserRole } from '../../index.js';
+import type { TUserRole } from '.';
 import type { Router } from 'express';
 import type { JwtPayload } from 'jsonwebtoken';
 

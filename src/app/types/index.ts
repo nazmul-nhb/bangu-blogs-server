@@ -12,8 +12,7 @@ export type TMethod =
 	| 'PATCH'
 	| 'HEAD'
 	| 'OPTIONS'
-	| 'CONNECT'
-	| 'TRACE';
+	| 'OK';
 
 export type TResponseDetails = { message: string; statusCode: number };
 
