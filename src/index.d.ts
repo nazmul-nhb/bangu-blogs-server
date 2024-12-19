@@ -1,4 +1,4 @@
-import type { BanguPayload } from './interfaces';
+import type { BanguPayload } from './app/types/interfaces';
 
 declare global {
 	namespace Express {

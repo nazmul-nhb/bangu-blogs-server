@@ -4,6 +4,7 @@ import { z } from 'zod';
 const creationSchema = z.object({
 	name: z
 		.string()
+		.trim()
 		.min(2)
 		.max(20)
 		.refine((value) => /^[A-Z]/.test(value), {

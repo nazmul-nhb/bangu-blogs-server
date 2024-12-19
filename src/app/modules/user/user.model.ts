@@ -9,15 +9,18 @@ const userSchema = new Schema<IUser>(
 		name: {
 			type: String,
 			required: true,
+			trim: true,
 		},
 		email: {
 			type: String,
 			required: true,
+			trim: true,
 			unique: true,
 		},
 		password: {
 			type: String,
 			required: true,
+			trim: true,
 			select: 0,
 		},
 		role: {
@@ -44,7 +47,7 @@ userSchema.pre('save', async function (next) {
 });
 
 /** Static method to check if user exists */
-userSchema.statics.validateUser = async function (email:string) {
+userSchema.statics.validateUser = async function (email: string) {
 	const user = await this.findOne({ email }).select('+password');
 
 	if (!user) {
@@ -75,6 +78,6 @@ userSchema.statics.validateUser = async function (email:string) {
 	}
 
 	return user;
-}
+};
 
 export const User = model<IUser, IUserModel>('User', userSchema);
