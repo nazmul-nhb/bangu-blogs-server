@@ -4,7 +4,10 @@ import router from './app/routes';
 import cookieParser from 'cookie-parser';
 import sendResponse from './app/utilities/sendResponse';
 import type { Application, Request, Response } from 'express';
-import { globalError, handleNotFound } from './app/middlewares/errorHandlers';
+import {
+	catchAllErrors,
+	handleInvalidRequest,
+} from './app/middlewares/errorHandlers';
 
 // Create an Express App
 const app: Application = express();
@@ -18,16 +21,16 @@ app.use(express.json());
 
 // * Root/Test Route
 app.get('/', (_req: Request, res: Response) => {
-	sendResponse(res, 'N/A', 'get', null, 'Server is Running! 🏃');
+	sendResponse(res, 'N/A', 'GET', null, 'Server is Running! 🏃');
 });
 
 // * Application Routes
 app.use('/api', router);
 
-// * Error handler for 404
-app.use(handleNotFound);
+// * Error handler for 404 or invalid request
+app.use(handleInvalidRequest);
 
-// * Global Error Handler
-app.use(globalError);
+// * Global Error Handler to send error responses
+app.use(catchAllErrors);
 
 export default app;

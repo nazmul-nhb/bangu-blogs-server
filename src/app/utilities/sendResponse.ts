@@ -1,24 +1,24 @@
 import type { Response } from 'express';
-import type { TCollection, TOperation, TResponseDetails } from '../types';
+import type { TCollection, TMethod, TResponseDetails } from '../types';
 
 /**
  * @function
  * Sends a formatted JSON response.
  * @param res Response from Express.js from the specific controller.
  * @param collection The name of the collection (e.g., 'Student').
- * @param operation The operation type (e.g., 'create', 'get', 'update', 'delete').
+ * @param method The method type (e.g., 'POST', 'GET', 'PUT', 'PATCH', 'DELETE' etc.).
  * @param data Optional data to include in the response.
  */
 const sendResponse = <T>(
 	res: Response,
 	collection: TCollection,
-	operation: TOperation,
+	method: TMethod,
 	data?: T,
 	customMessage?: string,
 ): void => {
 	const { message, statusCode } = customMessage
 		? { message: customMessage, statusCode: 200 }
-		: generateResponse(collection, operation, data);
+		: generateResponse(collection, method, data);
 
 	const response = { success: true, message, ...(data && { data }) };
 
@@ -27,15 +27,15 @@ const sendResponse = <T>(
 
 /**
  * @function
- * Generates message and status code based on the collection and operation type.
+ * Generates message and status code based on the collection and method type.
  * @param collection The name of the collection (e.g., 'Student').
- * @param operation The operation type (e.g., 'create', 'get', 'update', 'delete').
+ * @param method The method type (e.g., 'POST', 'GET', 'PUT', 'PATCH', 'DELETE' etc.).
  * @param data The data being operated upon.
  * @returns An object containing the formatted message and HTTP status code.
  */
 const generateResponse = <T>(
 	collection: TCollection,
-	operation: TOperation,
+	method: TMethod,
 	data?: T,
 ): TResponseDetails => {
 	const isArray = Array.isArray(data);
@@ -43,20 +43,21 @@ const generateResponse = <T>(
 	let message = 'Operation Successful!',
 		statusCode = 200;
 
-	switch (operation) {
-		case 'create':
+	switch (method) {
+		case 'POST':
 			statusCode = 201;
 			message = `${collection} is created successfully!`;
 			break;
-		case 'get':
+		case 'GET':
 			message = isArray
 				? `${collection}s are retrieved successfully!`
 				: `${collection} is retrieved successfully!`;
 			break;
-		case 'update':
+		case 'PUT':
+		case 'PATCH':
 			message = `${collection} is updated successfully!`;
 			break;
-		case 'delete':
+		case 'DELETE':
 			message = `${collection} is deleted successfully!`;
 			break;
 		default:
