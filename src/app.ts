@@ -6,7 +6,7 @@ import sendResponse from './app/utilities/sendResponse';
 import type { Application, Request, Response } from 'express';
 import {
 	catchAllErrors,
-	handleInvalidRequest,
+	handleRouteNotFound,
 } from './app/middlewares/errorHandlers';
 
 // Create an Express App
@@ -28,7 +28,7 @@ app.get('/', (_req: Request, res: Response) => {
 app.use('/api', router);
 
 // * Error handler for 404 or invalid request
-app.use(handleInvalidRequest);
+app.use(handleRouteNotFound);
 
 // * Global error handler to catch and send error responses
 app.use(catchAllErrors);

@@ -1,6 +1,5 @@
 import type { TUserRole } from '.';
 import type { Router } from 'express';
-import type { RequestHandler } from 'express';
 import type { JwtPayload } from 'jsonwebtoken';
 
 export interface IDuplicateError {
@@ -49,17 +48,4 @@ export interface IRoute {
 export interface BanguPayload extends JwtPayload {
 	email: string;
 	role: TUserRole;
-}
-
-/**
- * Type for Express middleware in `req.app._router.stack`
- */
-export interface Middleware {
-	route?: {
-		path: string;
-		methods: Record<string, boolean>;
-		queryParams?: Record<string, unknown>;
-	};
-	name: string;
-	handle: RequestHandler;
 }

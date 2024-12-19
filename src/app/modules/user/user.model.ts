@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import type { IUser } from './user.types';
+import { hashPassword } from '../../utilities/passwordUtils';
 
 const userSchema = new Schema<IUser>(
 	{
@@ -15,7 +16,7 @@ const userSchema = new Schema<IUser>(
 		password: {
 			type: String,
 			required: true,
-			select: false,
+			select: 0,
 		},
 		role: {
 			type: String,
@@ -32,5 +33,12 @@ const userSchema = new Schema<IUser>(
 		versionKey: false,
 	},
 );
+
+// * Hash password before saving the user in DB.
+userSchema.pre('save', async function (next) {
+	this.password = await hashPassword(this.password);
+
+	next();
+});
 
 export const User = model<IUser>('User', userSchema);

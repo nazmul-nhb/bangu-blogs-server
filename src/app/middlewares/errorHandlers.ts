@@ -1,51 +1,22 @@
 import chalk from 'chalk';
+import { STATUS_CODES } from '../constants';
 import processErrors from '../errors/processErrors';
 import { ErrorWithStatus } from '../classes/ErrorWithStatus';
-import type { ErrorRequestHandler, RequestHandler } from 'express';
-import type { Middleware } from '../types/interfaces';
-import { STATUS_CODES } from '../constants';
+import type { RequestHandler, ErrorRequestHandler } from 'express';
 
-/**
- * Middleware to Handle "Method Not Allowed" and "Not Found" Errors.
- */
-export const handleInvalidRequest: RequestHandler = (req, _res, next) => {
-	const availableMethods: string[] = [];
-
-	// Check if any available route matches the requested path
-	req.app._router.stack.forEach((middleware: Middleware) => {
-		if (middleware.route?.path === req.path) {
-			availableMethods.push(
-				...Object.keys(middleware.route.methods).map((method) =>
-					method.toUpperCase(),
-				),
-			);
-		}
-	});
-
-	// Method Not Allowed
-	if (availableMethods.length > 0 && !availableMethods.includes(req.method)) {
-		const error = new ErrorWithStatus(
-			'MethodNotAllowedError',
-			`Method “${req.method}” is not allowed for the route “${req.path}”. Allowed methods: ${availableMethods.join(', ')}.`,
-			STATUS_CODES.METHOD_NOT_ALLOWED,
-			req.path,
-		);
-		return next(error);
-	}
-
-	// Route Not Found
+/** Middleware to Handle "Not Found" Errors.*/
+export const handleRouteNotFound: RequestHandler = (req, _res, next) => {
 	const error = new ErrorWithStatus(
 		'NotFoundError',
-		`Requested End-Point “${req.method}: ${req.url}” Not Found!`,
+		`Requested End-Point “${req.method}: ${req.path}” Not Found!`,
 		STATUS_CODES.NOT_FOUND,
 		req.path,
 	);
+
 	return next(error);
 };
 
-/**
- * Middleware to Handle Global Errors.
- */
+/** Middleware to Handle Global Errors. */
 export const catchAllErrors: ErrorRequestHandler = (err, _req, res, next) => {
 	const { statusCode, name, errorSource, stack } = processErrors(err);
 

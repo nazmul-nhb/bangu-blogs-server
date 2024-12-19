@@ -16,11 +16,14 @@ const sendResponse = <T>(
 	data?: T,
 	customMessage?: string,
 ): void => {
-	const { message, statusCode } = customMessage
-		? { message: customMessage, statusCode: 200 }
-		: generateResponse(collection, method, data);
+	const { message, statusCode } = generateResponse(collection, method, data);
 
-	const response = { success: true, message, ...(data && { data }) };
+	const response = {
+		success: true,
+		message: customMessage ? customMessage : message,
+		statusCode,
+		...(data && { data }),
+	};
 
 	res.status(statusCode).json(response);
 };
