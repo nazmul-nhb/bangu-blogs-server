@@ -16,7 +16,7 @@ export interface ILoginCredentials {
 	password: string;
 }
 
-export interface IToken {
+export interface ITokens {
 	accessToken: string;
 	refreshToken: string;
 }

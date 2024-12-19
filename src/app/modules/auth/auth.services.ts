@@ -2,9 +2,13 @@ import configs from '../../configs';
 import { User } from '../user/user.model';
 import { STATUS_CODES } from '../../constants';
 import { ErrorWithStatus } from '../../classes/ErrorWithStatus';
-import { comparePassword, generateToken } from '../../utilities/authUtilities';
+import {
+	comparePassword,
+	generateToken,
+	verifyToken,
+} from '../../utilities/authUtilities';
 import type { BanguPayload } from '../../types/interfaces';
-import type { ILoginCredentials, IToken, IUser } from '../user/user.types';
+import type { ILoginCredentials, ITokens, IUser } from '../user/user.types';
 
 /**
  * Create a new user in MongoDB `user` collection.
@@ -23,10 +27,10 @@ const registerUserInDB = async (payload: IUser) => {
 
 /**
  * Login user.
- * @param payload Login credentials.
+ * @param payload Login credentials (`email` and `password`).
  * @returns Token as object.
  */
-const loginUser = async (payload: ILoginCredentials): Promise<IToken> => {
+const loginUser = async (payload: ILoginCredentials): Promise<ITokens> => {
 	// checking if the user is exist
 	const user = await User.validateUser(payload.email);
 
@@ -67,4 +71,28 @@ const loginUser = async (payload: ILoginCredentials): Promise<IToken> => {
 	return { accessToken, refreshToken };
 };
 
-export const authServices = { registerUserInDB, loginUser };
+/**
+ * Refresh token.
+ * @param token Refresh token from client.
+ * @returns New access token.
+ */
+const refreshToken = async (token: string): Promise<{ token: string }> => {
+    const decodedToken = verifyToken(configs.refreshSecret, token);
+    
+	const user = await User.validateUser(decodedToken.email);
+
+	const jwtPayload = {
+		email: user.email,
+		role: user.role,
+	};
+
+	const accessToken = generateToken(
+		jwtPayload,
+		configs.accessSecret,
+		configs.accessExpireTime,
+	);
+
+	return { token: accessToken };
+};
+
+export const authServices = { registerUserInDB, loginUser, refreshToken };

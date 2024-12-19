@@ -12,12 +12,7 @@ import type { BanguPayload } from '../types/interfaces';
  */
 export const hashPassword = async (password: string): Promise<string> => {
 	try {
-		const hashedPassword = await bcrypt.hash(
-			password,
-			Number(configs.saltRounds),
-		);
-
-		return hashedPassword;
+		return await bcrypt.hash(password, Number(configs.saltRounds));
 	} catch (_error) {
 		throw new ErrorWithStatus(
 			'InternalServerError',
@@ -34,12 +29,12 @@ export const hashPassword = async (password: string): Promise<string> => {
  * @param hashedPassword Password from DB to be compared with.
  * @returns Boolean
  */
-export const comparePassword = (
+export const comparePassword = async (
 	rawPassword: string,
 	hashedPassword: string,
 ): Promise<boolean> => {
 	try {
-		return bcrypt.compare(rawPassword, hashedPassword);
+		return await bcrypt.compare(rawPassword, hashedPassword);
 	} catch (_error) {
 		throw new ErrorWithStatus(
 			'InternalServerError',
@@ -62,7 +57,16 @@ export const generateToken = (
 	secret: string,
 	expiresIn: string,
 ): string => {
-	return jwt.sign(payload, secret, { expiresIn });
+	try {
+		return jwt.sign(payload, secret, { expiresIn });
+	} catch (_error) {
+		throw new ErrorWithStatus(
+			'InternalServerError',
+			'Cannot generate token!',
+			STATUS_CODES.INTERNAL_SERVER_ERROR,
+			'auth',
+		);
+	}
 };
 
 /**

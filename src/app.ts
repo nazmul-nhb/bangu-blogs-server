@@ -21,7 +21,7 @@ app.use(express.json());
 
 // * Root/Test Route
 app.get('/', (_req: Request, res: Response) => {
-	sendResponse(res, 'N/A', 'GET', null, 'Server is Running! 🏃');
+	sendResponse(res, 'N/A', 'OK', null, 'Server is Running! 🏃');
 });
 
 // * Application Routes

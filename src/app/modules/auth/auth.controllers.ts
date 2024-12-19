@@ -30,4 +30,19 @@ const loginUser = catchAsync(async (req, res) => {
 	);
 });
 
-export const authControllers = { registerUser, loginUser };
+/** Generate new access token. */
+const refreshToken = catchAsync(async (req, res) => {
+	const { refreshToken } = req.cookies;
+
+	const result = await authServices.refreshToken(refreshToken);
+
+	sendResponse(
+		res,
+		'N/A',
+		'OK',
+		result,
+		'Successfully retrieved new access token!',
+	);
+});
+
+export const authControllers = { registerUser, loginUser, refreshToken };

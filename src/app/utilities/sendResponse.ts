@@ -47,6 +47,9 @@ const generateResponse = <T>(
 		statusCode = 200;
 
 	switch (method) {
+		case 'OK':
+			statusCode = 200;
+			break;
 		case 'POST':
 			statusCode = 201;
 			message = `${collection} is created successfully!`;

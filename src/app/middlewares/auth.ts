@@ -6,17 +6,25 @@ import { User } from '../modules/user/user.model';
 import { verifyToken } from '../utilities/authUtilities';
 import { STATUS_CODES } from '../constants';
 
+/**
+ * Middleware to check if the user is authorized to access the route.
+ * @param requiredRoles User role/roles (comma separated) required to access the route.
+ */
 const auth = (...requiredRoles: TUserRole[]) => {
 	return catchAsync(async (req, _res, next) => {
-		const token = req.headers.authorization;
+		const token = req.headers.authorization?.split(' ')[1];
+
+        console.log({token});
 
 		// Verify token
-		const decoded = verifyToken(configs.accessSecret, token);
+		const decodedToken = verifyToken(configs.accessSecret, token);
+
+        const {email, role} = decodedToken;
 
 		// Validate user
-		await User.validateUser(decoded.email);
+		await User.validateUser(email);
 
-		if (requiredRoles.length && !requiredRoles.includes(decoded.role)) {
+		if (requiredRoles.length && !requiredRoles.includes(role)) {
 			throw new ErrorWithStatus(
 				'AuthorizationError',
 				"You're not authorized",
@@ -25,7 +33,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
 			);
 		}
 
-		req.user = decoded;
+		req.user = decodedToken;
 
 		next();
 	});
