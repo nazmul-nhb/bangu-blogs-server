@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
-import type { IUser, IUserModel } from './user.types';
+import type { IUserDoc, IUserModel } from './user.types';
 import { hashPassword } from '../../utilities/authUtilities';
 import { ErrorWithStatus } from '../../classes/ErrorWithStatus';
 import { STATUS_CODES } from '../../constants';
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUserDoc>(
 	{
 		name: {
 			type: String,
@@ -21,7 +21,7 @@ const userSchema = new Schema<IUser>(
 			type: String,
 			required: true,
 			trim: true,
-			select: 0,
+			select: false,
 		},
 		role: {
 			type: String,
@@ -80,4 +80,4 @@ userSchema.statics.validateUser = async function (email: string) {
 	return user;
 };
 
-export const User = model<IUser, IUserModel>('User', userSchema);
+export const User = model<IUserDoc, IUserModel>('User', userSchema);

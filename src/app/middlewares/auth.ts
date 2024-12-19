@@ -10,16 +10,14 @@ import { STATUS_CODES } from '../constants';
  * Middleware to check if the user is authorized to access the route.
  * @param requiredRoles User role/roles (comma separated) required to access the route.
  */
-const auth = (...requiredRoles: TUserRole[]) => {
+const authorizeUser = (...requiredRoles: TUserRole[]) => {
 	return catchAsync(async (req, _res, next) => {
 		const token = req.headers.authorization?.split(' ')[1];
 
-        console.log({token});
-
-		// Verify token
+		// * Verify token
 		const decodedToken = verifyToken(configs.accessSecret, token);
 
-        const {email, role} = decodedToken;
+		const { email, role } = decodedToken;
 
 		// Validate user
 		await User.validateUser(email);
@@ -39,4 +37,4 @@ const auth = (...requiredRoles: TUserRole[]) => {
 	});
 };
 
-export default auth;
+export default authorizeUser;

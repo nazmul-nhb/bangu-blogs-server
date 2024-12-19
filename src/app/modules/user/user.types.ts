@@ -1,4 +1,4 @@
-import type { Document, Model } from 'mongoose';
+import type { Document, Model, Types } from 'mongoose';
 import type { USER_ROLE } from './user.constants';
 
 export type TUserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
@@ -21,8 +21,10 @@ export interface ITokens {
 	refreshToken: string;
 }
 
-export interface IUserDoc extends Document {}
+export interface IUserDoc extends IUser, Document {
+	_id: Types.ObjectId;
+}
 
-export interface IUserModel extends Model<IUser> {
-	validateUser(email: string): Promise<IUser>;
+export interface IUserModel extends Model<IUserDoc> {
+	validateUser(email: string): Promise<IUserDoc>;
 }

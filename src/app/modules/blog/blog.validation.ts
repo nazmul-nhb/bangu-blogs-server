@@ -4,10 +4,9 @@ import { z } from 'zod';
 const creationSchema = z.object({
 	title: z.string().min(1, 'Title is required!'),
 	content: z.string().min(1, 'Content is required!'),
-	author: z.string().min(1, 'Author is required!'),
 	isPublished: z.boolean().default(false),
 });
 
-const updateSchema = creationSchema.omit({ author: true }).partial().strict();
+const updateSchema = creationSchema.partial().strict();
 
-export const blogValidation = { creationSchema, updateSchema };
+export const blogValidations = { creationSchema, updateSchema };

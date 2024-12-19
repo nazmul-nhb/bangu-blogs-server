@@ -38,7 +38,7 @@ export const handleZodErrors = (
 
 	return {
 		statusCode: 400,
-		name: 'Validation Error',
+		name: 'Zod Validation Error',
 		errorSource,
 		stack: error.stack || stack,
 	};

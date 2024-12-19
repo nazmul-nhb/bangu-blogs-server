@@ -77,8 +77,8 @@ const loginUser = async (payload: ILoginCredentials): Promise<ITokens> => {
  * @returns New access token.
  */
 const refreshToken = async (token: string): Promise<{ token: string }> => {
-    const decodedToken = verifyToken(configs.refreshSecret, token);
-    
+	const decodedToken = verifyToken(configs.refreshSecret, token);
+
 	const user = await User.validateUser(decodedToken.email);
 
 	const jwtPayload = {
