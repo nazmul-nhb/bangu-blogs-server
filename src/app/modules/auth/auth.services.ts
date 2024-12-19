@@ -43,7 +43,7 @@ const loginUser = async (payload: ILoginCredentials): Promise<ITokens> => {
 
 	if (!passwordMatched) {
 		throw new ErrorWithStatus(
-			'AuthorizationError',
+			'Authorization Error',
 			`Password did not match!`,
 			STATUS_CODES.UNAUTHORIZED,
 			'auth',

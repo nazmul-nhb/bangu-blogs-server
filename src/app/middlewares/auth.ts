@@ -24,8 +24,8 @@ const authorizeUser = (...requiredRoles: TUserRole[]) => {
 
 		if (requiredRoles.length && !requiredRoles.includes(role)) {
 			throw new ErrorWithStatus(
-				'AuthorizationError',
-				"You're not authorized",
+				'Authorization Error',
+				"You're not authorized!",
 				STATUS_CODES.UNAUTHORIZED,
 				'auth',
 			);

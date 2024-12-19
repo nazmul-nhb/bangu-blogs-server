@@ -7,7 +7,7 @@ import type { RequestHandler, ErrorRequestHandler } from 'express';
 /** Middleware to Handle "Not Found" Errors.*/
 export const handleRouteNotFound: RequestHandler = (req, _res, next) => {
 	const error = new ErrorWithStatus(
-		'NotFoundError',
+		'Not Found Error',
 		`Requested End-Point “${req.method}: ${req.path}” Not Found!`,
 		STATUS_CODES.NOT_FOUND,
 		req.path,

@@ -1,4 +1,4 @@
-import type { TErrorName, TStatusCode } from '../types';
+import type { TStatusCode } from '../types';
 
 /**
  * @class
@@ -10,7 +10,7 @@ import type { TErrorName, TStatusCode } from '../types';
  */
 export class ErrorWithStatus extends Error {
 	constructor(
-		public name: TErrorName,
+		public name: string,
 		public message: string,
 		public status: TStatusCode,
 		public path: string = '',

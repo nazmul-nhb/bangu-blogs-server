@@ -7,7 +7,7 @@ import type { IBlog } from './blog.types';
 const saveBlogInDB = async (payload: IBlog, email?: string) => {
 	if (!email) {
 		throw new ErrorWithStatus(
-			'AuthorizationError',
+			'Authorization Error',
 			"You're not authorized",
 			STATUS_CODES.UNAUTHORIZED,
 			'auth',

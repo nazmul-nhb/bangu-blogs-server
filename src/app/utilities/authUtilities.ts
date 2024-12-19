@@ -15,7 +15,7 @@ export const hashPassword = async (password: string): Promise<string> => {
 		return await bcrypt.hash(password, Number(configs.saltRounds));
 	} catch (_error) {
 		throw new ErrorWithStatus(
-			'InternalServerError',
+			'Internal Server Error',
 			'Error hashing password!',
 			STATUS_CODES.INTERNAL_SERVER_ERROR,
 			'password',
@@ -37,7 +37,7 @@ export const comparePassword = async (
 		return await bcrypt.compare(rawPassword, hashedPassword);
 	} catch (_error) {
 		throw new ErrorWithStatus(
-			'InternalServerError',
+			'Internal Server Error',
 			'Error comparing password!',
 			STATUS_CODES.INTERNAL_SERVER_ERROR,
 			'password',
@@ -61,7 +61,7 @@ export const generateToken = (
 		return jwt.sign(payload, secret, { expiresIn });
 	} catch (_error) {
 		throw new ErrorWithStatus(
-			'InternalServerError',
+			'Internal Server Error',
 			'Cannot generate token!',
 			STATUS_CODES.INTERNAL_SERVER_ERROR,
 			'auth',
@@ -78,7 +78,7 @@ export const generateToken = (
 export const verifyToken = (secret: string, token?: string): BanguPayload => {
 	if (!token) {
 		throw new ErrorWithStatus(
-			'AuthorizationError',
+			'Authorization Error',
 			"You're not authorized!",
 			STATUS_CODES.UNAUTHORIZED,
 			'auth',
@@ -89,7 +89,7 @@ export const verifyToken = (secret: string, token?: string): BanguPayload => {
 		return jwt.verify(token, secret) as BanguPayload;
 	} catch (_error) {
 		throw new ErrorWithStatus(
-			'AuthorizationError',
+			'Authorization Error',
 			'Your token is invalid or expired!',
 			STATUS_CODES.UNAUTHORIZED,
 			'auth',

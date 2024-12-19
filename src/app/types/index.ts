@@ -16,13 +16,4 @@ export type TMethod =
 
 export type TResponseDetails = { message: string; statusCode: number };
 
-export type TErrorName =
-	| 'ValidationError'
-	| 'ZodValidationError'
-	| 'NotFoundError'
-	| 'MethodNotAllowedError'
-	| 'AuthenticationError'
-	| 'AuthorizationError'
-	| 'InternalServerError';
-
 export type TStatusCode = (typeof STATUS_CODES)[keyof typeof STATUS_CODES];
