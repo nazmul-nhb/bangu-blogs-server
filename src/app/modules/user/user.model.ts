@@ -53,7 +53,7 @@ userSchema.statics.validateUser = async function (email: string) {
 	if (!user) {
 		throw new ErrorWithStatus(
 			'Not Found Error',
-			`User with email ${email} not found!`,
+			`No user found with email: ${email}!`,
 			STATUS_CODES.NOT_FOUND,
 			'user',
 		);
@@ -61,7 +61,7 @@ userSchema.statics.validateUser = async function (email: string) {
 
 	if (user.isDeleted) {
 		throw new ErrorWithStatus(
-			'Not Found Error',
+			'Authentication Error',
 			`User with email ${email} is deleted!`,
 			STATUS_CODES.FORBIDDEN,
 			'user',

@@ -4,7 +4,7 @@ import { z } from 'zod';
 const creationSchema = z.object({
 	title: z.string().min(1, 'Title is required!'),
 	content: z.string().min(1, 'Content is required!'),
-	isPublished: z.boolean().default(false),
+	isPublished: z.boolean().default(true).optional(),
 });
 
 const updateSchema = creationSchema.partial().strict();

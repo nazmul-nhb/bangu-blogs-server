@@ -52,19 +52,19 @@ const generateResponse = <T>(
 			break;
 		case 'POST':
 			statusCode = 201;
-			message = `${collection} is created successfully!`;
+			message = `${collection} created successfully!`;
 			break;
 		case 'GET':
 			message = isArray
-				? `${collection}s are retrieved successfully!`
-				: `${collection} is retrieved successfully!`;
+				? `${collection}s fetched successfully!`
+				: `${collection} fetched successfully!`;
 			break;
 		case 'PUT':
 		case 'PATCH':
-			message = `${collection} is updated successfully!`;
+			message = `${collection} updated successfully!`;
 			break;
 		case 'DELETE':
-			message = `${collection} is deleted successfully!`;
+			message = `${collection} deleted successfully!`;
 			break;
 		default:
 			break;

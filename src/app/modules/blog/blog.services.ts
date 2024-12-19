@@ -4,6 +4,7 @@ import { User } from '../user/user.model';
 import { Blog } from './blog.model';
 import type { IBlog } from './blog.types';
 
+/** Save a blog in MongoDB */
 const saveBlogInDB = async (payload: IBlog, email?: string) => {
 	if (!email) {
 		throw new ErrorWithStatus(
@@ -32,4 +33,11 @@ const saveBlogInDB = async (payload: IBlog, email?: string) => {
 	};
 };
 
-export const blogServices = { saveBlogInDB };
+/** Get all blogs from MongoDB */
+const getAllBlogsFromDB = async () => {
+	const blogs = await Blog.find();
+
+	return blogs;
+};
+
+export const blogServices = { saveBlogInDB, getAllBlogsFromDB };

@@ -14,4 +14,6 @@ router.post(
 	blogControllers.createBlog,
 );
 
+router.get('/', blogControllers.getAllBlogs);
+
 export const blogRoutes = router;
