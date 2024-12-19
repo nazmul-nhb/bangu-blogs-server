@@ -8,7 +8,7 @@ export interface IUser {
 	email: string;
 	password: string;
 	role: TUserRole;
-	isBlocked: boolean;
+	isBlocked?: boolean;
 }
 
 export interface IUserDocument extends Document {}
