@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose';
-import type { IUser } from './user.types';
-import { hashPassword } from '../../utilities/passwordUtils';
+import type { IUser, IUserModel } from './user.types';
+import { hashPassword } from '../../utilities/authUtilities';
+import { ErrorWithStatus } from '../../classes/ErrorWithStatus';
+import { STATUS_CODES } from '../../constants';
 
 const userSchema = new Schema<IUser>(
 	{
@@ -41,4 +43,38 @@ userSchema.pre('save', async function (next) {
 	next();
 });
 
-export const User = model<IUser>('User', userSchema);
+/** Static method to check if user exists */
+userSchema.statics.validateUser = async function (email:string) {
+	const user = await this.findOne({ email }).select('+password');
+
+	if (!user) {
+		throw new ErrorWithStatus(
+			'NotFoundError',
+			`User with email ${email} not found!`,
+			STATUS_CODES.NOT_FOUND,
+			'user',
+		);
+	}
+
+	if (user.isDeleted) {
+		throw new ErrorWithStatus(
+			'NotFoundError',
+			`User with email ${email} is deleted!`,
+			STATUS_CODES.FORBIDDEN,
+			'user',
+		);
+	}
+
+	if (user.status === 'blocked') {
+		throw new ErrorWithStatus(
+			'AuthenticationError',
+			`User with email ${email} is blocked!`,
+			STATUS_CODES.FORBIDDEN,
+			'user',
+		);
+	}
+
+	return user;
+}
+
+export const User = model<IUser, IUserModel>('User', userSchema);

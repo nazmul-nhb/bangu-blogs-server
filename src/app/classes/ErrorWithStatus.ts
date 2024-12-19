@@ -9,6 +9,7 @@ import type { TErrorName, TStatusCode } from '../types';
  * @param path Path where the error occurred
  */
 export class ErrorWithStatus extends Error {
+	
 	constructor(
 		public name: TErrorName,
 		public message: string,

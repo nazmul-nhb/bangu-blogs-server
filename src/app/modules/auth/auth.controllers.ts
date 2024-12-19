@@ -9,4 +9,11 @@ const registerUser = catchAsync(async (req, res) => {
 	sendResponse(res, 'User', 'POST', result, 'User registered successfully!');
 });
 
-export const authControllers = { registerUser };
+/** Login a user */
+const loginUser = catchAsync(async (req, res) => {
+	const result = await authServices.loginUser(req.body);
+
+	sendResponse(res, 'User', 'POST', result, 'Login successful!');
+})
+
+export const authControllers = { registerUser, loginUser };

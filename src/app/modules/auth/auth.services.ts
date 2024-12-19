@@ -1,5 +1,10 @@
+import configs from '../../configs';
 import { User } from '../user/user.model';
-import type { IUser } from '../user/user.types';
+import { STATUS_CODES } from '../../constants';
+import { ErrorWithStatus } from '../../classes/ErrorWithStatus';
+import { comparePassword, generateToken } from '../../utilities/authUtilities';
+import type { BanguPayload } from '../../types/interfaces';
+import type { ILoginCredentials, IToken, IUser } from '../user/user.types';
 
 /**
  * Create a new user in MongoDB `user` collection.
@@ -16,4 +21,50 @@ const registerUserInDB = async (payload: IUser) => {
 	return user;
 };
 
-export const authServices = { registerUserInDB };
+/**
+ * Login user.
+ * @param payload Login credentials.
+ * @returns Token as object.
+ */
+const loginUser = async (payload: ILoginCredentials): Promise<IToken> => {
+	// checking if the user is exist
+	const user = await User.validateUser(payload.email);
+
+	//checking if the password is correct
+
+	const passwordMatched = await comparePassword(
+		payload?.password,
+		user?.password,
+	);
+
+	if (!passwordMatched) {
+		throw new ErrorWithStatus(
+			'AuthorizationError',
+			`Password did not match!`,
+			STATUS_CODES.UNAUTHORIZED,
+			'auth',
+		);
+	}
+
+	//create token and sent to the  client
+	const jwtPayload: BanguPayload = {
+		email: user.email,
+		role: user.role,
+	};
+
+	const accessToken = generateToken(
+		jwtPayload,
+		configs.accessSecret,
+		configs.accessExpireTime,
+	);
+
+	// const refreshToken = generateToken(
+	// 	jwtPayload,
+	// 	configs.refreshSecret,
+	// 	configs.refreshExpireTime,
+	// );
+
+	return { token: accessToken };
+};
+
+export const authServices = { registerUserInDB, loginUser };
