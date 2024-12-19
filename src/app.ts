@@ -30,7 +30,7 @@ app.use('/api', router);
 // * Error handler for 404 or invalid request
 app.use(handleInvalidRequest);
 
-// * Global Error Handler to send error responses
+// * Global error handler to catch and send error responses
 app.use(catchAllErrors);
 
 export default app;

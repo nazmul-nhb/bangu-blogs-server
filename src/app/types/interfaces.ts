@@ -47,7 +47,7 @@ export interface IRoute {
 }
 
 export interface BanguPayload extends JwtPayload {
-	id: string;
+	email: string;
 	role: TUserRole;
 }
 
