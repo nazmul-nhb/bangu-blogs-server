@@ -19,10 +19,10 @@ const authorizeUser = (...requiredRoles: TUserRole[]) => {
 
 		const { email, role } = decodedToken;
 
-		// Validate user
+		// * Validate user
 		await User.validateUser(email);
 
-		if (requiredRoles.length && !requiredRoles.includes(role)) {
+		if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
 			throw new ErrorWithStatus(
 				'Authorization Error',
 				"You're not authorized!",
