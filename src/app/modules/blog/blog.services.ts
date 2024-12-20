@@ -3,8 +3,9 @@ import { STATUS_CODES } from '../../constants';
 import { User } from '../user/user.model';
 import { Blog } from './blog.model';
 import type { Types } from 'mongoose';
-import type { IBlog } from './blog.types';
+import type { IBlog, IBlogQuery } from './blog.types';
 import type { BanguPayload } from '../../types/interfaces';
+import { QueryBuilder } from '../../classes/QueryBuilder';
 
 /**
  * Save a blog in MongoDB.
@@ -96,9 +97,19 @@ const deleteBlogFromDB = async (id: Types.ObjectId, user?: BanguPayload) => {
 	}
 };
 
-/** Get all blogs from MongoDB */
-const getAllBlogsFromDB = async () => {
-	const blogs = await Blog.find();
+/**
+ * Get all blogs from MongoDB
+ * @param query Query object from request.
+ * @returns All blogs.
+ */
+const getAllBlogsFromDB = async (query?: IBlogQuery) => {
+	const blogQuery = new QueryBuilder(Blog.find(), query)
+		.search(['title', 'content'])
+		.banguFilter('author', 'filter')
+		.filter()
+		.sort();
+
+	const blogs = await blogQuery.modelQuery.exec();
 
 	return blogs;
 };

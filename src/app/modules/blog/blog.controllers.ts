@@ -29,8 +29,8 @@ const deleteBlog = catchAsync(async (req, res) => {
 });
 
 /** Get all blogs. */
-const getAllBlogs = catchAsync(async (_req, res) => {
-	const result = await blogServices.getAllBlogsFromDB();
+const getAllBlogs = catchAsync(async (req, res) => {
+	const result = await blogServices.getAllBlogsFromDB(req.query);
 
 	sendResponse(res, 'Blog', 'GET', result);
 });

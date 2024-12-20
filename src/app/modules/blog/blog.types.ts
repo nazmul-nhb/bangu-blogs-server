@@ -25,3 +25,13 @@ export interface IPopulatedBlog {
 export interface IBlogModel extends Model<IBlogDoc> {
 	findBlogById: (id: Types.ObjectId) => Promise<IPopulatedBlog>;
 }
+
+export interface IBlogQuery {
+	search?: string;
+	sortBy?: string;
+	sortOrder?: 'asc' | 'desc';
+	filter?: string;
+	page?: number;
+	limit?: number;
+	[key: string]: unknown;
+}

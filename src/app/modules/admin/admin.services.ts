@@ -54,7 +54,7 @@ const blockUserInDB = async (id: Types.ObjectId, admin?: BanguPayload) => {
 		);
 	}
 
-	return "User blocked successfully!";
+	return 'User blocked successfully!';
 };
 
 /**

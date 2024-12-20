@@ -21,4 +21,4 @@ const deleteBlog = catchAsync(async (req, res) => {
 	sendResponse(res, 'Blog', 'DELETE');
 });
 
-export const adminControllers = {blockUser, deleteBlog };
+export const adminControllers = { blockUser, deleteBlog };
