@@ -23,7 +23,7 @@ router.patch(
 
 router.delete(
 	'/:id',
-	authorizeUser(USER_ROLE.USER, USER_ROLE.ADMIN),
+	authorizeUser(USER_ROLE.USER),
 	blogControllers.deleteBlog,
 );
 

@@ -65,7 +65,7 @@ const updateBlogInDB = async (
 };
 
 /**
- * Delete a blog from MongoDB.
+ * Delete a blog from MongoDB for `user`.
  * @param id Blog ID to delete.
  * @param user Current logged in user.
  */
@@ -75,26 +75,23 @@ const deleteBlogFromDB = async (id: Types.ObjectId, user?: BanguPayload) => {
 		User.validateUser(user?.email),
 	]);
 
-	if (
-		existingBlog.author.email === currentUser.email ||
-		currentUser.role === 'admin'
-	) {
-		const result = await Blog.deleteOne({ _id: id });
-
-		if (result.deletedCount < 1) {
-			throw new ErrorWithStatus(
-				'Not Found Error',
-				`No blog found with ID ${id}!`,
-				STATUS_CODES.NOT_FOUND,
-				'blog',
-			);
-		}
-	} else {
+	if (existingBlog.author.email !== currentUser.email) {
 		throw new ErrorWithStatus(
 			'Authorization Error',
-			'Not enough permission to delete the blog!',
+			'You do not own this blog!',
 			STATUS_CODES.UNAUTHORIZED,
 			'auth',
+		);
+	}
+
+	const result = await Blog.deleteOne({ _id: id });
+
+	if (result.deletedCount < 1) {
+		throw new ErrorWithStatus(
+			'Not Found Error',
+			`No blog found with ID ${id}!`,
+			STATUS_CODES.NOT_FOUND,
+			'blog',
 		);
 	}
 };
