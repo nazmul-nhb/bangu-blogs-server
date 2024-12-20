@@ -1,6 +1,4 @@
-/**
- * HTTP Status Code Mapping
- */
+/** HTTP Status Code Mapping */
 export const STATUS_CODES = {
 	OK: 200,
 	CREATED: 201,

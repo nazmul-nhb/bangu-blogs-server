@@ -9,7 +9,7 @@ import type { RequestHandler, Request, Response, NextFunction } from 'express';
  *
  * @example
  * // Example usage:
- * app.get('/some-route', catchAsync(async (req, res, next) => {
+ * app.get('/route', catchAsync(async (req, res, next) => {
  *   const data = await someAsyncFunction();
  *   res.json(data);
  * }));
