@@ -47,7 +47,16 @@ userSchema.pre('save', async function (next) {
 });
 
 /** Static method to check if user exists */
-userSchema.statics.validateUser = async function (email: string) {
+userSchema.statics.validateUser = async function (email?: string) {
+	if (!email) {
+		throw new ErrorWithStatus(
+			'Authentication Error',
+			'Please provide a valid email!',
+			STATUS_CODES.BAD_REQUEST,
+			'user',
+		);
+	}
+
 	const user = await this.findOne({ email }).select('+password');
 
 	if (!user) {

@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose';
-import type { Query } from 'mongoose';
-import type { IBlogDoc } from './blog.types';
+import type { Query, Types } from 'mongoose';
+import type { IBlogDoc, IBlogModel } from './blog.types';
+import { ErrorWithStatus } from '../../classes/ErrorWithStatus';
+import { STATUS_CODES } from '../../constants';
 
 const blogSchema = new Schema<IBlogDoc>(
 	{
@@ -42,4 +44,28 @@ blogSchema.pre(/^find/, function (next) {
 	next();
 });
 
-export const Blog = model<IBlogDoc>('Blog', blogSchema);
+blogSchema.statics.findBlogById = async function (id: Types.ObjectId) {
+	if (!id) {
+		throw new ErrorWithStatus(
+			'Bad Request Error',
+			'Please provide a valid ID!',
+			STATUS_CODES.BAD_REQUEST,
+			'blog',
+		);
+	}
+
+	const blog = await this.findById(id);
+
+	if (!blog) {
+		throw new ErrorWithStatus(
+			'Not Found Error',
+			`No blog found with ID ${id}!`,
+			STATUS_CODES.NOT_FOUND,
+			'blog',
+		);
+	}
+
+	return blog;
+};
+
+export const Blog = model<IBlogDoc, IBlogModel>('Blog', blogSchema);

@@ -1,4 +1,4 @@
-import type { Document, Types } from 'mongoose';
+import type { Document, Types, Model } from 'mongoose';
 
 export interface IBlog {
 	title: string;
@@ -9,4 +9,19 @@ export interface IBlog {
 
 export interface IBlogDoc extends IBlog, Document {
 	_id: Types.ObjectId;
+}
+
+export interface IPopulatedBlog {
+	_id: Types.ObjectId;
+	title: string;
+	content: string;
+	author: {
+		_id: Types.ObjectId;
+		name: string;
+		email: string;
+	};
+}
+
+export interface IBlogModel extends Model<IBlogDoc> {
+	findBlogById: (id: Types.ObjectId) => Promise<IPopulatedBlog>;
 }

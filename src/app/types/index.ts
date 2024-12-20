@@ -2,8 +2,6 @@ import type { STATUS_CODES } from '../constants';
 
 export type TCollection = 'N/A' | 'User' | 'Blog';
 
-export type TUserRole = 'user' | 'admin';
-
 export type TMethod =
 	| 'GET'
 	| 'POST'

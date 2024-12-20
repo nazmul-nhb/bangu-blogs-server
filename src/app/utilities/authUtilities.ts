@@ -79,7 +79,7 @@ export const verifyToken = (secret: string, token?: string): BanguPayload => {
 	if (!token) {
 		throw new ErrorWithStatus(
 			'Authorization Error',
-			"You're not authorized!",
+			'Invalid credentials!',
 			STATUS_CODES.UNAUTHORIZED,
 			'auth',
 		);

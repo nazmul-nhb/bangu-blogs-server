@@ -26,5 +26,5 @@ export interface IUserDoc extends IUser, Document {
 }
 
 export interface IUserModel extends Model<IUserDoc> {
-	validateUser(email: string): Promise<IUserDoc>;
+	validateUser(email?: string): Promise<IUserDoc>;
 }
