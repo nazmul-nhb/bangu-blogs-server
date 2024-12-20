@@ -13,15 +13,6 @@ import type { BanguPayload } from '../../types/interfaces';
  * @returns Created blog.
  */
 const saveBlogInDB = async (payload: IBlog, email?: string) => {
-	if (!email) {
-		throw new ErrorWithStatus(
-			'Authorization Error',
-			"You're not authorized!",
-			STATUS_CODES.UNAUTHORIZED,
-			'auth',
-		);
-	}
-
 	const user = await User.validateUser(email);
 
 	payload.author = user._id;
@@ -73,6 +64,41 @@ const updateBlogInDB = async (
 	return updatedBlog;
 };
 
+/**
+ * Delete a blog from MongoDB.
+ * @param id Blog ID to delete.
+ * @param user Current logged in user.
+ */
+const deleteBlogFromDB = async (id: Types.ObjectId, user?: BanguPayload) => {
+	const [existingBlog, currentUser] = await Promise.all([
+		Blog.findBlogById(id),
+		User.validateUser(user?.email),
+	]);
+
+	if (
+		existingBlog.author.email === currentUser.email ||
+		currentUser.role === 'admin'
+	) {
+		const result = await Blog.deleteOne({ _id: id });
+
+		if (result.deletedCount < 1) {
+			throw new ErrorWithStatus(
+				'Not Found Error',
+				`No blog found with ID ${id}!`,
+				STATUS_CODES.NOT_FOUND,
+				'blog',
+			);
+		}
+	} else {
+		throw new ErrorWithStatus(
+			'Authorization Error',
+			'Not enough permission to delete the blog!',
+			STATUS_CODES.UNAUTHORIZED,
+			'auth',
+		);
+	}
+};
+
 /** Get all blogs from MongoDB */
 const getAllBlogsFromDB = async () => {
 	const blogs = await Blog.find();
@@ -80,4 +106,9 @@ const getAllBlogsFromDB = async () => {
 	return blogs;
 };
 
-export const blogServices = { saveBlogInDB, updateBlogInDB, getAllBlogsFromDB };
+export const blogServices = {
+	saveBlogInDB,
+	updateBlogInDB,
+	deleteBlogFromDB,
+	getAllBlogsFromDB,
+};

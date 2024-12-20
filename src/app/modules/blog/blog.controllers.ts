@@ -19,6 +19,15 @@ const updateBlog = catchAsync(async (req, res) => {
 	sendResponse(res, 'Blog', 'PATCH', result);
 });
 
+/** Delete a blog */
+const deleteBlog = catchAsync(async (req, res) => {
+	const id = new Types.ObjectId(req.params.id);
+
+	await blogServices.deleteBlogFromDB(id, req?.user);
+
+	sendResponse(res, 'Blog', 'DELETE');
+});
+
 /** Get all blogs. */
 const getAllBlogs = catchAsync(async (_req, res) => {
 	const result = await blogServices.getAllBlogsFromDB();
@@ -26,4 +35,9 @@ const getAllBlogs = catchAsync(async (_req, res) => {
 	sendResponse(res, 'Blog', 'GET', result);
 });
 
-export const blogControllers = { createBlog, updateBlog, getAllBlogs };
+export const blogControllers = {
+	createBlog,
+	updateBlog,
+	deleteBlog,
+	getAllBlogs,
+};
