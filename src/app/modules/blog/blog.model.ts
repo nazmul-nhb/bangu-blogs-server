@@ -47,7 +47,7 @@ blogSchema.pre(/^find/, function (next) {
 blogSchema.statics.findBlogById = async function (id: Types.ObjectId) {
 	if (!id) {
 		throw new ErrorWithStatus(
-			'Bad Request Error',
+			'Bad Request',
 			'Please provide a valid ID!',
 			STATUS_CODES.BAD_REQUEST,
 			'blog',

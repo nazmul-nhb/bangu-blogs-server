@@ -34,9 +34,9 @@ const blockUserInDB = async (id: Types.ObjectId, admin?: BanguPayload) => {
 
 	if (user.isBlocked) {
 		throw new ErrorWithStatus(
-			'Not Found Error',
+			'Already Blocked',
 			`${user.name} is already blocked!`,
-			STATUS_CODES.NOT_FOUND,
+			STATUS_CODES.CONFLICT,
 			'user',
 		);
 	}
@@ -45,7 +45,7 @@ const blockUserInDB = async (id: Types.ObjectId, admin?: BanguPayload) => {
 
 	if (result.modifiedCount < 1) {
 		throw new ErrorWithStatus(
-			'Bad Request Error',
+			'Bad Request',
 			`User with ID ${id} cannot be blocked!`,
 			STATUS_CODES.BAD_REQUEST,
 			'user',

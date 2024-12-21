@@ -5,7 +5,7 @@ import { USER_ROLE } from '../user/user.constants';
 
 const router = Router();
 
-router.delete(
+router.patch(
 	'/users/:id/block',
 	authorizeUser(USER_ROLE.ADMIN),
 	adminControllers.blockUser,
