@@ -8,31 +8,44 @@
   </summary>
 
    1. **[Overview](#-overview)**  
-   2. **[Technologies (Packages) Used](#-technologies-packages-used)**  
-   3. **[Run the Server Locally](#️-run-the-server-locally)**  
+   2. **[Key Features of Bangu Blogs Server](#-key-features-of-bangu-blogs-server)**  
+   3. **[Technologies (Packages) Used](#-technologies-packages-used)**  
+   4. **[Run the Server Locally](#️-run-the-server-locally)**  
       - [Prerequisites](#prerequisites)  
       - [Installation](#installation)  
-   4. **[Authentication](#-authentication)**  
+   5. **[Authentication](#-authentication)**  
       - [User Registration](#user-registration)  
       - [User Login](#user-login)  
-   5. **[Blog Management](#-blog-management)**  
+   6. **[Blog Management](#-blog-management)**  
       - [Create Blog](#create-blog)  
       - [Update Blog](#update-blog)  
       - [Delete Blog](#delete-blog)  
-   6. **[Admin Actions](#️-admin-actions)**  
+   7. **[Admin Actions](#️-admin-actions)**  
       - [Block User](#block-user)  
       - [Delete Blog (Admin)](#delete-blog-admin)  
-   7. **[Search, Sort & Filter Blogs](#-search-sort--filter-blogs)**  
-   8. **[Error Handling](#-error-handling)**  
-   9. **[Custom Progress Indicators](#-custom-progress-indicators)**
-   10. **[Project Overview Video](#-project-overview-video)**  
-   11. **[Admin Credentials](#-admin-credentials)**  
+   8. **[Search, Sort & Filter Blogs](#-search-sort--filter-blogs)**  
+   9. **[Error Handling](#-error-handling)**  
+   10. **[Custom Progress Indicators](#-custom-progress-indicators)**
+   11. **[Project Overview Video](#-project-overview-video)**  
+   12. **[Admin Credentials](#-admin-credentials)**  
 
 </details>
 
 ## 📚 Overview
 
 Bangu Blogs Server is a robust backend application built for managing blogs with user authentication, role-based access control, and comprehensive API functionalities. It supports both **Admin** and **User** roles with tailored permissions and features.
+
+## 🚀 **Key Features of Bangu Blogs Server**
+
+1. **User Authentication & Authorization:** Secure login with role-based access control (Admin, User).  
+2. **Role Management:** Admins can block users and manage all blogs, while users can manage their own content.  
+3. **JWT-Based Security:** Access and refresh tokens ensure secure session management.  
+4. **Middleware Protection:** Role-based access enforced through middleware (`authorizeUser`).  
+5. **Blog Management:** Full CRUD operations for blogs, with ownership validation.  
+6. **Search, Sort & Filter:**  Efficient querying powered by a reusable `QueryBuilder` class, designed to support future module expansions.  
+7. **Password Encryption:** User passwords are securely hashed using **bcrypt**.  
+8. **Data Validation:** Input validated with **Zod** schemas to ensure data integrity.  
+9. **Scalable Architecture:** Modular and well-structured backend code for maintainability.  
 
 ## 🚀 Technologies (Packages) Used
 
@@ -429,7 +442,7 @@ All error responses follow a consistent structure:
 
 ## 📊 **Custom Progress Indicators**  
 
-Implemented **custom progress indicators** using `progress-estimator` and `chalk` for key development tasks to improve visibility and clarity during long-running processes:  
+Implemented **custom progress indicators** using `progress-estimator`, `globby` and `chalk` for key development tasks to improve visibility and clarity during long-running processes:  
 
 - **Build:** `pnpm build` – Displays progress while building the project.  
 - **Lint:** `pnpm lint` – Provides real-time progress feedback during linting.  

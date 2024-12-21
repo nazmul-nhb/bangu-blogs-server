@@ -1,5 +1,4 @@
 node_modules
-.estimator
 .vercel
 .env
 dist
