@@ -2,8 +2,12 @@ import { z } from 'zod';
 
 /** Validation schema for creating a new blog */
 const creationSchema = z.object({
-	title: z.string().min(1, 'Title is required!'),
-	content: z.string().min(1, 'Content is required!'),
+	title: z
+		.string({ required_error: 'Title is required!' })
+		.min(1, { message: 'Title cannot be empty!' }),
+	content: z
+		.string({ required_error: 'Content is required!' })
+		.min(1, { message: 'Content cannot be empty!' }),
 	isPublished: z.boolean().default(true).optional(),
 });
 

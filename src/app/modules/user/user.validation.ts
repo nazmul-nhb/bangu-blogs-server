@@ -3,10 +3,9 @@ import { z } from 'zod';
 /** Validation Schema for Creating new User */
 const creationSchema = z.object({
 	name: z
-		.string()
+		.string({ required_error: 'Title is required!' })
 		.trim()
-		.min(2)
-		.max(20)
+		.min(2, { message: 'Name must be at least 2 characters long!' })
 		.refine((value) => /^[A-Z]/.test(value), {
 			message: 'Name must start with a capital letter',
 		}),

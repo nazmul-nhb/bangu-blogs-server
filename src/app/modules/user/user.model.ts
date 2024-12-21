@@ -57,7 +57,7 @@ userSchema.statics.validateUser = async function (email?: string) {
 		);
 	}
 
-	const user = await this.findOne({ email }).select('+password');
+	const user: IUserDoc = await this.findOne({ email }).select('+password');
 
 	if (!user) {
 		throw new ErrorWithStatus(
@@ -68,19 +68,10 @@ userSchema.statics.validateUser = async function (email?: string) {
 		);
 	}
 
-	if (user.isDeleted) {
+	if (user.isBlocked) {
 		throw new ErrorWithStatus(
 			'Authentication Error',
-			`User with email ${email} is deleted!`,
-			STATUS_CODES.FORBIDDEN,
-			'user',
-		);
-	}
-
-	if (user.status === 'blocked') {
-		throw new ErrorWithStatus(
-			'Authentication Error',
-			`User with email ${email} is blocked!`,
+			`User with email ${email} is Blocked!`,
 			STATUS_CODES.FORBIDDEN,
 			'user',
 		);

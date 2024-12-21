@@ -453,7 +453,7 @@ Implemented **custom progress indicators** using `progress-estimator`, `globby` 
 
 ## 📹 Project Overview Video
 
-- **[Project Demo Video Link](https://drive.google.com)**
+- **[Project Demo Video Link](https://drive.google.com/file/d/1Bi0j3PaH5MbJzWZfVO4VkVRNCAKJEQV0/view?usp=sharing)**
 
 ---
 
