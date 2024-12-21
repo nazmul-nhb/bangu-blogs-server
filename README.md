@@ -24,8 +24,9 @@
       - [Delete Blog (Admin)](#delete-blog-admin)  
    7. **[Search, Sort & Filter Blogs](#-search-sort--filter-blogs)**  
    8. **[Error Handling](#-error-handling)**  
-   9. **[Project Overview Video](#-project-overview-video)**  
-   10. **[Admin Credentials](#-admin-credentials)**  
+   9. **[Custom Progress Indicators](#-custom-progress-indicators)**
+   10. **[Project Overview Video](#-project-overview-video)**  
+   11. **[Admin Credentials](#-admin-credentials)**  
 
 </details>
 
@@ -35,23 +36,45 @@ Bangu Blogs Server is a robust backend application built for managing blogs with
 
 ## 🚀 Technologies (Packages) Used
 
-- **Core Technologies:**
-  - `TypeScript`
-  - `Node.js`
-  - `Express.js`
-  - `Mongoose`
-- **Authentication & Security:**
-  - `bcrypt`
-  - `jsonwebtoken`
-  - `cookie-parser`
-- **Environment Configuration:**
-  - `dotenv`
-- **Utilities:**
-  - `chalk`
-  - `progress-indicator`
-  - `execa`
-- **Cross-Origin Resource Sharing:**
-  - `cors`
+### **🛠️ Core Technologies**
+
+- **TypeScript** – Typed JavaScript for better scalability and maintainability.  
+- **Node.js** – JavaScript runtime environment.  
+- **Express.js** – Fast, unopinionated web framework for Node.js.  
+- **Mongoose** – Elegant MongoDB object modeling for Node.js.
+
+### **🔒 Authentication & Security**
+
+- **bcrypt** – Library for hashing passwords.  
+- **jsonwebtoken** – Implementation of JSON Web Tokens for authentication.  
+- **cookie-parser** – Middleware to parse cookies in requests.
+
+### **✅ Validation**
+
+- **zod** – TypeScript-first schema validation library.
+
+### **🌍 Cross-Origin Resource Sharing**
+
+- **cors** – Middleware for enabling CORS in Express.
+
+### **⚙️ Environment Configuration**
+
+- **dotenv** – Loads environment variables from a `.env` file.
+
+### **🛡️ Code Quality & Formatting**
+
+- **eslint** – Linter for identifying problematic patterns in code.  
+- **prettier** – Code formatter for consistent styling.
+
+### **📦 Build & Development Utilities**
+
+- **chalk** – Terminal string styling for improved CLI output.  
+- **progress-estimator** – Estimate and display task progress.  
+- **execa** – Better `child_process` management.  
+- **rimraf** – Cross-platform tool for recursive file deletion.  
+- **globby** – Advanced globbing library for file matching.  
+- **nodemon** – Utility for automatically restarting the server during development.  
+- **ts-node** – Run TypeScript directly without manual compilation.
 
 ## 🛠️ Run the Server Locally
 
@@ -92,32 +115,32 @@ Bangu Blogs Server is a robust backend application built for managing blogs with
    Create a `.env` file in the root directory with the following fields:
 
    ```env
-      NODE_ENV=development
-      PORT=4242 or any port number
-      SALT_ROUNDS=<number>
-      MONGO_URI=your_mongo_db_uri
-      JWT_ACCESS_SECRET=secret_string_for_access_token
-      JWT_ACCESS_EXPIRES_IN=expiry_time (1h, 1d etc.)
-      JWT_REFRESH_SECRET=secret_string_for_refresh_token
-      JWT_REFRESH_EXPIRES_IN=expiry_time (1h, 1d etc.)
+    NODE_ENV=development
+    PORT=4242 or any port number
+    SALT_ROUNDS=<number>
+    MONGO_URI=your_mongo_db_uri
+    JWT_ACCESS_SECRET=secret_string_for_access_token
+    JWT_ACCESS_EXPIRES_IN=expiry_time (1h, 1d etc.)
+    JWT_REFRESH_SECRET=secret_string_for_refresh_token
+    JWT_REFRESH_EXPIRES_IN=expiry_time (1h, 1d etc.)
    ```
 
 4. Start the development server:
 
    ```bash
-   pnpm dev
+    pnpm dev
    ```
 
    for `npm`:
 
    ```bash
-   npm run dev
+    npm run dev
    ```
 
    for `yarn`:
 
    ```bash
-   yarn run dev
+    yarn run dev
    ```
 
 5. Access the API at:
@@ -401,6 +424,17 @@ All error responses follow a consistent structure:
   "stack": "Error stack trace if available"
 }
 ```
+
+---
+
+## 📊 **Custom Progress Indicators**  
+
+Implemented **custom progress indicators** using `progress-estimator` and `chalk` for key development tasks to improve visibility and clarity during long-running processes:  
+
+- **Build:** `pnpm build` – Displays progress while building the project.  
+- **Lint:** `pnpm lint` – Provides real-time progress feedback during linting.  
+- **Fix:** `pnpm fix` – Tracks progress while auto-fixing linting issues.
+- **Deploy:** `pnpm run deploy` – Builds the project and deploys it to **Vercel** with production settings, displaying progress for both stages.  
 
 ---
 
