@@ -9,7 +9,7 @@
 
    1. **[Overview](#-overview)**  
    2. **[Key Features of Bangu Blogs Server](#-key-features-of-bangu-blogs-server)**  
-   3. **[Technologies (Packages) Used](#-technologies-packages-used)**  
+   3. **[Technologies (Packages) Used](#️-technologies-packages-used)**  
    4. **[Run the Server Locally](#️-run-the-server-locally)**  
       - [Prerequisites](#prerequisites)  
       - [Installation](#installation)  
@@ -47,7 +47,7 @@ Bangu Blogs Server is a robust backend application built for managing blogs with
 8. **Data Validation:** Input validated with **Zod** schemas to ensure data integrity.  
 9. **Scalable Architecture:** Modular and well-structured backend code for maintainability.  
 
-## 🚀 Technologies (Packages) Used
+## ⚙️ Technologies (Packages) Used
 
 ### **🛠️ Core Technologies**
 
@@ -85,9 +85,9 @@ Bangu Blogs Server is a robust backend application built for managing blogs with
 - **progress-estimator** – Estimate and display task progress.  
 - **execa** – Better `child_process` management.  
 - **rimraf** – Cross-platform tool for recursive file deletion.  
-- **globby** – Advanced globbing library for file matching.  
+- **globby** – Advanced globbing library for file matching (in `build.mjs`).  
 - **nodemon** – Utility for automatically restarting the server during development.  
-- **ts-node** – Run TypeScript directly without manual compilation.
+- **ts-node** – Run TypeScript in development directly without manual compilation.
 
 ## 🛠️ Run the Server Locally
 
