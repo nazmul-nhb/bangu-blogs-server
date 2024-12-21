@@ -14,15 +14,13 @@ const authorizeUser = (...requiredRoles: TUserRole[]) => {
 	return catchAsync(async (req, _res, next) => {
 		const token = req.headers.authorization?.split(' ')[1];
 
-		// * Verify token
-		const decodedToken = verifyToken(configs.accessSecret, token);
+		// * Verify and decode token
+		const decoded = verifyToken(configs.accessSecret, token);
 
-		const { email, role } = decodedToken;
+		// * Validate and extract user from DB
+		const user = await User.validateUser(decoded.email);
 
-		// * Validate user
-		await User.validateUser(email);
-
-		if (requiredRoles.length > 0 && !requiredRoles.includes(role)) {
+		if (requiredRoles.length > 0 && !requiredRoles.includes(user.role)) {
 			throw new ErrorWithStatus(
 				'Authorization Error',
 				"You're not authorized!",
@@ -31,7 +29,7 @@ const authorizeUser = (...requiredRoles: TUserRole[]) => {
 			);
 		}
 
-		req.user = decodedToken;
+		req.user = decoded;
 
 		next();
 	});

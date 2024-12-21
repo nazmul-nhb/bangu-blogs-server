@@ -12,9 +12,7 @@ import { STATUS_CODES } from '../../constants';
  * @returns A message indicating the result of the operation.
  */
 const blockUserInDB = async (id: Types.ObjectId, admin?: BanguPayload) => {
-	const storedAdmin = await User.validateUser(admin?.email);
-
-	if (storedAdmin.role !== 'admin') {
+	if (admin?.role !== 'admin') {
 		throw new ErrorWithStatus(
 			'Authorization Error',
 			'You do not have permission to block this user!',

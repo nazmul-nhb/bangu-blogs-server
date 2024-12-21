@@ -16,9 +16,9 @@ import type { ILoginCredentials, ITokens, IUser } from '../user/user.types';
  * @returns User object from MongoDB.
  */
 const registerUserInDB = async (payload: IUser) => {
-	const result = await User.create(payload);
+	const newUser = await User.create(payload);
 
-	const { _id, name, email } = result.toObject();
+	const { _id, name, email } = newUser.toObject();
 
 	const user = { _id, name, email };
 
@@ -31,11 +31,10 @@ const registerUserInDB = async (payload: IUser) => {
  * @returns Token as object.
  */
 const loginUser = async (payload: ILoginCredentials): Promise<ITokens> => {
-	// checking if the user is exist
+	// * Validate and extract user from DB.
 	const user = await User.validateUser(payload.email);
 
-	//checking if the password is correct
-
+	// * Check if password matches with the saved password in DB.
 	const passwordMatched = await comparePassword(
 		payload?.password,
 		user?.password,
@@ -50,7 +49,7 @@ const loginUser = async (payload: ILoginCredentials): Promise<ITokens> => {
 		);
 	}
 
-	//create token and sent to the  client
+	// * Create tokens and send to the client.
 	const jwtPayload: BanguPayload = {
 		email: user.email,
 		role: user.role,
@@ -77,10 +76,13 @@ const loginUser = async (payload: ILoginCredentials): Promise<ITokens> => {
  * @returns New access token.
  */
 const refreshToken = async (token: string): Promise<{ token: string }> => {
+	// * Verify and decode token
 	const decodedToken = verifyToken(configs.refreshSecret, token);
 
+	// * Validate and extract user from DB.
 	const user = await User.validateUser(decodedToken.email);
 
+	// * Create token and send to the  client.
 	const jwtPayload = {
 		email: user.email,
 		role: user.role,

@@ -18,24 +18,27 @@ const saveBlogInDB = async (payload: IBlog, email?: string) => {
 
 	payload.author = user._id;
 
-	const blog = await Blog.create(payload);
+	const newBlog = await Blog.create(payload);
 
-	return {
-		_id: blog._id,
-		title: blog.title,
-		content: blog.content,
-		author: {
-			_id: user._id,
-			name: user.name,
-			email: user.email,
-		},
-	};
+	if (!newBlog) {
+		throw new ErrorWithStatus(
+			'Internal Server Error',
+			"Couldn't create blog!",
+			STATUS_CODES.INTERNAL_SERVER_ERROR,
+			'blog',
+		);
+	}
+
+	const blog = await Blog.findBlogById(newBlog._id);
+
+	return blog;
 };
 
 /**
  * Update a blog.
  * @param id MongoDB `ObjectId` for the blog.
  * @param payload Field(s) to update.
+ * @param user Current logged in user.
  * @returns Updated blog.
  */
 const updateBlogInDB = async (
@@ -43,12 +46,9 @@ const updateBlogInDB = async (
 	payload: Partial<IBlog>,
 	user?: BanguPayload,
 ) => {
-	const [existingBlog, currentUser] = await Promise.all([
-		Blog.findBlogById(id),
-		User.validateUser(user?.email),
-	]);
+	const existingBlog = await Blog.findBlogById(id);
 
-	if (existingBlog.author.email !== currentUser.email) {
+	if (existingBlog.author.email !== user?.email) {
 		throw new ErrorWithStatus(
 			'Authorization Error',
 			'You do not own this blog!',
@@ -71,12 +71,9 @@ const updateBlogInDB = async (
  * @param user Current logged in user.
  */
 const deleteBlogFromDB = async (id: Types.ObjectId, user?: BanguPayload) => {
-	const [existingBlog, currentUser] = await Promise.all([
-		Blog.findBlogById(id),
-		User.validateUser(user?.email),
-	]);
+	const existingBlog = await Blog.findBlogById(id);
 
-	if (existingBlog.author.email !== currentUser.email) {
+	if (existingBlog.author.email !== user?.email) {
 		throw new ErrorWithStatus(
 			'Authorization Error',
 			'You do not own this blog!',

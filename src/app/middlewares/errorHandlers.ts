@@ -26,7 +26,7 @@ export const catchAllErrors: ErrorRequestHandler = (err, _req, res, next) => {
 		console.error(chalk.redBright(`	➡ ${err.message}`));
 	});
 
-	// console.error(error);
+	// console.error(err);
 
 	// * Delegate to the default Express error handler
 	// ? if the headers have already been sent to the client
@@ -37,7 +37,7 @@ export const catchAllErrors: ErrorRequestHandler = (err, _req, res, next) => {
 	// * Send error response with status code
 	res.status(statusCode).json({
 		success: false,
-		message: errorSource.map((err) => err.message).join('; '),
+		message: errorSource.map((err) => err.message).join(' | '),
 		statusCode,
 		error: {
 			details: errorSource.map((source) => ({ name, ...source })),
