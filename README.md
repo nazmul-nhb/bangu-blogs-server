@@ -2,28 +2,64 @@
 
 - [Live Server Link](https://bangu-blogs-server-nhb.vercel.app)
 
-## Technologies (Packages) Used
+<details>
+  <summary>
+      <h3 style="display:inline;">📑 Table of Contents</h3>
+  </summary>
 
-- `TypeScript`
-- `Node.js`
-- `Express.js`
-- `Mongoose`
-- `cors`
-- `dotenv`
-- `bcrypt`
-- `jsonwebtoken`
-- `cookie-parse`
-- `chalk`
-- `progress-indicator`
-- `execa`
+   1. **[Overview](#-overview)**  
+   2. **[Technologies (Packages) Used](#-technologies-packages-used)**  
+   3. **[Run the Server Locally](#️-run-the-server-locally)**  
+      - [Prerequisites](#prerequisites)  
+      - [Installation](#installation)  
+   4. **[Authentication](#-authentication)**  
+      - [User Registration](#user-registration)  
+      - [User Login](#user-login)  
+   5. **[Blog Management](#-blog-management)**  
+      - [Create Blog](#create-blog)  
+      - [Update Blog](#update-blog)  
+      - [Delete Blog](#delete-blog)  
+   6. **[Admin Actions](#️-admin-actions)**  
+      - [Block User](#block-user)  
+      - [Delete Blog (Admin)](#delete-blog-admin)  
+   7. **[Search, Sort & Filter Blogs](#-search-sort--filter-blogs)**  
+   8. **[Error Handling](#-error-handling)**  
+   9. **[Project Overview Video](#-project-overview-video)**  
+   10. **[Admin Credentials](#-admin-credentials)**  
 
-## Run the Server Locally
+</details>
+
+## 📚 Overview
+
+Bangu Blogs Server is a robust backend application built for managing blogs with user authentication, role-based access control, and comprehensive API functionalities. It supports both **Admin** and **User** roles with tailored permissions and features.
+
+## 🚀 Technologies (Packages) Used
+
+- **Core Technologies:**
+  - `TypeScript`
+  - `Node.js`
+  - `Express.js`
+  - `Mongoose`
+- **Authentication & Security:**
+  - `bcrypt`
+  - `jsonwebtoken`
+  - `cookie-parser`
+- **Environment Configuration:**
+  - `dotenv`
+- **Utilities:**
+  - `chalk`
+  - `progress-indicator`
+  - `execa`
+- **Cross-Origin Resource Sharing:**
+  - `cors`
+
+## 🛠️ Run the Server Locally
 
 ### Prerequisites
 
-- Node.js (v20+)
+- `Node.js` (Preferred `v22+`)
 - `pnpm` package manager
-- If you prefer `npm` or `yarn`, delete `pnpm-lock.yaml` file and follow the following steps
+- If you prefer `npm` or `yarn` over `pnpm`, delete `pnpm-lock.yaml` file and follow the steps below.
 
 ### Installation
 
@@ -56,26 +92,32 @@
    Create a `.env` file in the root directory with the following fields:
 
    ```env
-   PORT=4242
-   MONGO_URI=your_mongo_db_uri
+      NODE_ENV=development
+      PORT=4242 or any port number
+      SALT_ROUNDS=<number>
+      MONGO_URI=your_mongo_db_uri
+      JWT_ACCESS_SECRET=secret_string_for_access_token
+      JWT_ACCESS_EXPIRES_IN=expiry_time (1h, 1d etc.)
+      JWT_REFRESH_SECRET=secret_string_for_refresh_token
+      JWT_REFRESH_EXPIRES_IN=expiry_time (1h, 1d etc.)
    ```
 
-4. Start the server:
+4. Start the development server:
 
    ```bash
-   pnpm start
+   pnpm dev
    ```
 
    for `npm`:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
    for `yarn`:
 
    ```bash
-   yarn start
+   yarn run dev
    ```
 
 5. Access the API at:
@@ -86,26 +128,289 @@
 
 ---
 
-## API Documentation
+## 🔑 Authentication
 
-### Base URL
+### User Registration
 
-`http://localhost:4242`
+- **Endpoint:** `POST /api/auth/register`
+- **Description:** Register a new user.
+- **Request Body:**
 
-### Endpoints
+   ```json
+   {
+     "name": "John Doe",
+     "email": "john@example.com",
+     "password": "123456"
+   }
+   ```
+
+- **Response:**
+
+   ```json
+   {
+     "success": true,
+     "message": "User registered successfully!",
+     "statusCode": 201,
+     "data": {
+       "_id": "string",
+       "name": "string",
+       "email": "string"
+     }
+   }
+   ```
+
+### User Login
+
+- **Endpoint:** `POST /api/auth/login`
+- **Description:** Authenticate a user and retrieve a JWT token.
+- **Request Body:**
+
+   ```json
+   {
+     "email": "john@example.com",
+     "password": "123456"
+   }
+   ```
+
+- **Response:**
+
+   ```json
+   {
+     "success": true,
+     "message": "Login successful!",
+     "statusCode": 200,
+     "data": {
+       "token": "string"
+     }
+   }
+   ```
 
 ---
 
-## Error Responses
+## 📖 Blog Management
 
-All error responses follow this structured format:
+### Create Blog
+
+- **Endpoint:** `POST /api/blogs`
+- **Description:** Create a new blog (User only).
+- **Request Header:**
+
+   ```bash
+   Authorization: Bearer <token>
+   ```
+
+- **Request Body:**
+
+   ```json
+   {
+     "title": "My First Blog",
+     "content": "This is my blog content."
+   }
+   ```
+
+- **Response:**
+
+   ```json
+   {
+     "success": true,
+     "message": "Blog created successfully!",
+     "statusCode": 201,
+     "data": {
+       "_id": "string",
+       "title": "My First Blog",
+       "content": "This is my blog content.",
+       "author": {
+         "_id": "author id",
+         "name": "author name",
+         "email": "author email"
+        }
+      }
+   }
+   ```
+
+### Update Blog
+
+- **Endpoint:** `PATCH /api/blogs/:id`
+- **Description:** Update an existing blog (User only).
+- **Request Header:**
+
+   ```bash
+   Authorization: Bearer <token>
+   ```
+
+- **Request Body:**
+
+   ```json
+   {
+     "title": "Updated Blog Title",
+     "content": "Updated content."
+   }
+   ```
+
+- **Response**
+
+   ```json
+   {
+   "success": true,
+   "message": "Blog updated successfully",
+   "statusCode": 200,
+   "data": {
+      "_id": "string",
+      "title": "string",
+      "content": "string",
+      "author": {
+        "_id": "author id",
+        "name": "author name",
+        "email": "author email"
+       }
+     }
+   }
+   ```
+
+### Delete Blog
+
+- **Endpoint:** `DELETE /api/blogs/:id`
+- **Description:** Delete a blog (User).
+- **Request Header:**
+
+   ```bash
+   Authorization: Bearer <token>
+   ```
+
+- **Response**
+
+   ```json
+   {
+    "success": true,
+    "message": "Blog deleted successfully!",
+    "statusCode": 200
+   }
+   ```
+
+---
+
+## ⚙️ Admin Actions
+
+### Block User
+
+- **Endpoint:** `PATCH /api/admin/users/:userId/block`
+- **Description:**  Allows an admin to block a user by updating the `isBlocked` property to `true`.
+- **Request Header:**
+
+   ```bash
+   Authorization: Bearer <admin_token>
+   ```
+
+- **Response**
+
+   ```json
+   {
+    "success": true,
+    "message":"User blocked successfully!",
+    "statusCode": 200
+   }
+   ```
+
+### Delete Blog (Admin)
+
+- **Endpoint:** `DELETE /api/admin/blogs/:id`
+- **Description:** Delete any blog.
+- **Request Header:**
+
+   ```bash
+   Authorization: Bearer <admin_token>
+   ```
+
+- **Response**
+
+   ```json
+   {
+    "success": true,
+    "message": "Blog deleted successfully!",
+    "statusCode": 200
+   }
+   ```
+
+---
+
+## 📊 Search, Sort & Filter Blogs
+
+- **Endpoint:** `GET /api/blogs`
+- **Query Parameters:**
+  - `search`: Search blogs by `title` or `content` (e.g., `search=productivity`).
+  - `sortBy`: Sort blogs by specific fields such as `createdAt` or `title` (e.g., `sortBy=title`).
+  - `sortOrder`: Defines the sorting order. Accepts values `asc` (ascending) or `desc` (descending). (e.g., `sortOrder=desc`).
+  - `filter`: Filter blogs by author ID (e.g., `author=authorId`).
+
+**Example Request URL**:
+
+```sql
+/api/blogs?search=productivity&sortBy=title&sortOrder=desc&filter=676652d0b7adefd7d645a727
+```
+
+In this example:
+
+- `search=technology`: Filters blogs containing the term "technology" in the title or content.
+- `sortBy=title`: Sorts the blogs by the `title` field.
+- `sortOrder=desc`: Sorts in descending order (newest blogs first).
+- `filter=676652d0b7adefd7d645a727`: Filters blogs authored by the user with the given `authorId`.
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Blogs fetched successfully!",
+  "statusCode": 200,
+  "data": [
+    {
+      "_id": "string",
+      "title": "string",
+      "content": "string",
+      "author": {
+        "_id": "author id",
+        "name": "author name",
+        "email": "author email"
+      }
+    },
+    {...}
+  ]
+}
+```
+
+---
+
+## 🐞 Error Handling
+
+All error responses follow a consistent structure:
 
 ```json
 {
   "success": false,
-  "message": "Error message describing the issue",
-  "statusCode": 400, // or other relevant HTTP status code
-  "error": {"details": "Additional error details, if applicable"},
-  "stack": "error stack trace, if available"
+  "message": "Error message",
+  "statusCode": 400,
+  "error": { "details": [
+         {
+           "name": "Error name",
+           "path": "where error occurred if traced",
+           "message": "Error message"
+         },
+         {...}
+      ]
+   },
+  "stack": "Error stack trace if available"
 }
 ```
+
+---
+
+## 📹 Project Overview Video
+
+- **[Project Demo Video Link](https://drive.google.com)**
+
+---
+
+## 🧠 Admin Credentials
+
+- **Email:** `admin@bangu.com`
+- **Password:** `123456`
